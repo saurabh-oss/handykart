@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.product-list {
+  margin-top: 55px;
+  padding-left: 25px;
+}
+
+.right {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.left {
+  text-align: left;
+}
+
+.pimage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-block: 10px;
+  height: 300px;
+}
+
+.product {
+  width: 320px;
+  text-align: center;
+}
+
+.product-header {
+  width: 320px;
+  text-align: center;
+  background-color: honeydew;
+}
+
+.product-header-col {
+  align-content: center;
+}
+
+.header {
+  height: 50px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  background-color: lightsalmon;
+}
+
+.footer {
+  height: 100px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 45px;
+  background-color: black;
+  text-align: center;
+  vertical-align: middle;
+  font-style: italic;
+  color: white;
+}
+
+img {
+  height: 50px;
+}
+
+.pcart {
+  background-color: #f1f1f1;
+  color: black;
+  font-size: 16px;
+  padding: 10px 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pcart:hover {
+  background-color: black;
+  color: white;
+}
+
+.ptab {
+  width: 100%;
+  padding-bottom: 25px;
+}
+
+.prow {
+  width: 100%;
+  padding-bottom: 25px;
+}
