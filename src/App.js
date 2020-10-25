@@ -5,6 +5,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ListProducts from './components/ListProducts';
 import ViewProduct from './components/ViewProduct';
+import Register from './components/Register';
+import Login from './components/Login';
 
 function App () {
     return (
@@ -15,6 +17,8 @@ function App () {
                     <Switch>
                         <Route path="/" exact component={ListProducts}></Route>
                         <Route path="/product/:id" component={ViewProduct}></Route>
+                        <Route path="/register" component={Register}></Route>
+                        <Route path="/login" component={Login}></Route>
                         {}
                     </Switch>
                 </div>

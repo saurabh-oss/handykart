@@ -31,11 +31,16 @@ class ListProducts extends Component {
                 {
                     this.state.productArr.map(
                         prod => 
-                        <div className="col-sm-6">
-                                <a href={"product/"+prod.id}>{ prod.title }</a>
-                                &nbsp;&nbsp;&nbsp;
-                                { prod.price }
-                                <img className="pimage" alt="" src={pimage} />
+                        <div className="col-sm-4">
+                            <div className="row">
+                                <div className="col-sm-10">
+                                    <a href={"product/"+prod.id}><h4>{ prod.title }</h4></a>
+                                </div>
+                                <div className="col-sm-2">
+                                    <h4>{ prod.price }</h4>
+                                </div>
+                            </div>
+                            <div><img className="pimage" alt="" src={pimage} /></div>
                         </div>
                     )
                 }

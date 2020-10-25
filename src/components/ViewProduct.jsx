@@ -14,9 +14,11 @@ class ViewProduct extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         Promise.all(
-            [ProductService.viewProduct(id)]
+            [ProductService.viewProduct(id), ProductService.listReviews(id)]
         ).then(
-            (res) => {
+            (results) => {
+                console.log(results);
+                const res = results[0];
                 this.setState({ product: res[0].data });
             }
         )
