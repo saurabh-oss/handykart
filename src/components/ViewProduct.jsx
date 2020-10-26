@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProductService from '../services/ProductService';
-import pimage from '../images/product.jpg';
 
 class ViewProduct extends Component {
     constructor(props) {
@@ -68,25 +67,35 @@ class ViewProduct extends Component {
                                 <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
                             </div>
                             <div className="row">
-                                <div className="col-sm-6"><img className="pimage" alt="" src={pimage} /></div>
-                                <div className="product-review">
-                                    <h5><i>Reviews:</i></h5>
+                                <div className="col-sm-6"><img className="pimage" alt="" src="../images/1001.webp" /></div>
+                                <div className="col-sm-6">
                                     <br></br>
-                                {
-                                    this.state.reviews.map(
-                                        review => 
-                                        <div key={ review.id }>
-                                        <b>{ review.reviewTitle }</b>
-                                        <br></br>
-                                        { review.reviewMessage }
-                                        <br></br>
-                                        <br></br>
-                                        </div>
-                                        )
-                                    }
+                                    <div className="left">
+                                        <h5><i>Category: </i>{this.state.product.category}</h5>
+                                    </div>
+                                    <br></br>
+                                    <div className="left">
+                                        <h5><i>Description: </i></h5>{this.state.product.description}
+                                    </div>
                                 </div>
                             </div>
                             <button className="btn btn-dark product-add" onClick={() => this.addToCart()}>Add to Cart</button>
+                            <div className="product-review">
+                                <h5><i>Reviews:</i></h5>
+                                <br></br>
+                            {
+                                this.state.reviews.map(
+                                    review => 
+                                    <div key={ review.id }>
+                                    <b>{ review.reviewTitle }</b>
+                                    <br></br>
+                                    { review.reviewMessage }
+                                    <br></br>
+                                    <br></br>
+                                    </div>
+                                    )
+                                }
+                            </div>
                         </div>
                         <div className="col-sm-1">&nbsp;</div>
                     </div>

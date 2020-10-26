@@ -14,15 +14,26 @@
   color: white;
 }
 
+.cart-table {
+  margin-top: 25px;
+  margin-bottom: 45px;
+  margin-left: 75px;
+  margin-right: 75px;
+  min-height: 390px;
+}
+
+.quantity {
+  width: 45px;
+  text-align: center;
+}
+
 .product-list {
-  padding-left: 15px;
-  padding-right: 15px;
   padding-bottom: 25px;
+  margin-left: 1px !important;
 }
 
 .product-card {
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-left: 0.01px;
   margin-bottom: 10px;
   margin-top: 20px;
   padding-bottom: 10px;
@@ -33,15 +44,18 @@
   text-align: center;
   background-color: honeydew;
   padding-top: 10px;
+  padding-bottom: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
 .pimage {
-  display: block;
+  display: inline-flexbox;
   height: 90%;
   width: 100%;
+  max-height: 300px;
+  max-width: 270px;
 }
 
 .product-review {
@@ -51,7 +65,7 @@
 }
 
 .product-add {
-  width: 200px;
+  width: 150px;
   align-self: center;
   background-color: lightseagreen !important;
   border: lightseagreen !important;

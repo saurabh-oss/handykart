@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProductService from '../services/ProductService';
-import pimage from '../images/product.jpg';
 
 class ListProducts extends Component {
     constructor(props) {
@@ -51,20 +50,20 @@ class ListProducts extends Component {
         } else {
             if(this.state.productArr !== null && this.state.productArr !== undefined && this.state.productArr.length > 0) {
                 return (
-                    <div className="row container-fluid product-list">
+                    <div className="row container-fluid product-list d-flex justify-content-center">
                         {
                             this.state.productArr.map(
                                 prod => 
                                 <div className="col-sm-4 card product-card">
-                                    <div className="row">
+                                    <div className="row container-fluid">
                                         <div className="col-sm-9 left product-header">
-                                            <a href={"product/"+prod.id}><h5>{ prod.title }</h5></a>
+                                            <a href={"product/"+prod.itemId}><h5>{ prod.title }</h5></a>
                                         </div>
                                         <div className="col-sm-3 right product-header">
                                             <h6>₹ { prod.price }</h6>
                                         </div>
                                     </div>
-                                    <div><img className="pimage" alt="" src={pimage} /></div>
+                                    <div><img className="pimage" alt="" src={'../images/' + prod.itemId + '.jpg'} /></div>
                                     <button className="btn btn-dark product-add">Add to Cart</button>
                                 </div>
                             )
