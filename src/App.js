@@ -9,12 +9,14 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
 import Logout from './components/Logout';
+import Search from './components/Search';
 
 function App () {
     return (
         <div className="App">
             <Router>
                 <Header />
+                <Search />
                 <div>
                     <Switch>
                         <Route path="/" exact component={ListProducts}></Route>
