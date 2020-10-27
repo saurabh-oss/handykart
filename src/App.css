@@ -1,3 +1,14 @@
+#hideDiv {
+  animation: hideMessage 0s 5s forwards;
+  visibility: visible;
+  background-color: lightseagreen;
+  color: white;
+}
+
+.welcome {
+  color: white;
+}
+
 .service-unavailable {
   padding-top: 120px;
   font-size: larger;
@@ -115,3 +126,5 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes hideMessage { to { visibility: hidden; }}

@@ -8,6 +8,7 @@ import ViewProduct from './components/ViewProduct';
 import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
+import Logout from './components/Logout';
 
 function App () {
     return (
@@ -20,6 +21,7 @@ function App () {
                         <Route path="/product/:id" component={ViewProduct}></Route>
                         <Route path="/register" component={Register}></Route>
                         <Route path="/login" component={Login}></Route>
+                        <Route path="/logout" component={Logout}></Route>
                         <Route path="/cart" component={Cart}></Route>
                         {}
                     </Switch>

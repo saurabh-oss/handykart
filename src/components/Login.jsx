@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
 import UserService from '../services/UserService';
+import Header from './Header';
 import './Register.css';
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            serviceUnavailable: false
+        };
+        this.loginPage = this.loginPage.bind(this);
+    }
+
+    loginPage() {
+        this.props.history.push('/login');
+    }
+
     loginUser() {
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
-        
-        Promise.all(
-            [UserService.loginUser(
-                {
-                    userName: email,
-                    userPass: password
-                }
-            )]
-        ).then(
+        var payload = {
+            userName: email,
+            userPass: password
+        };
+
+        UserService.loginUser(payload).then(
             (res) => {
-                console.log(res);
-                document.cookie = 'user=' + email + ';path=/';
+                console.log(res.data.userFullName);
+                document.cookie = 'user=' + res.data.userFullName + ';path=/';
+                this.props.history.push('/');
+                this.props.message = 'login';
             }
         ).catch(
             err => {
@@ -27,13 +39,6 @@ class Login extends Component {
                 console.log(err.stack);
             }
         );
-        /*
-        var userEQ = "user=";
-        var ca = document.cookie.split(';');
-        for(var i=0; i<ca.length;i++) {
-            var c = ca[0];
-            alert(c.substring(userEQ.length,c.length));
-        }*/
     }
 
     render() {
@@ -45,7 +50,7 @@ class Login extends Component {
                         <hr></hr>
                         <div className="form-group"> <input id="email" type="email" className="form-control" placeholder="Email Address" required="required" /> </div>
                         <div className="form-group"> <input id="password" type="password" className="form-control" placeholder="Password" required="required" /> </div>
-                        <div className="form-group text-center"> <button type="submit" className="btn btn-blue btn-block" onClick={() => this.loginUser()}>Login</button> </div>
+                        <div className="form-group text-center"> <button type="button" className="btn btn-blue btn-block" onClick={() => this.loginUser()}>Login</button> </div>
                     </form>
                 </div>
             </div>

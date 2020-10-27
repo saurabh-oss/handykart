@@ -17,7 +17,7 @@ class ListProducts extends Component {
         ).then(
             (res) => {
                 this.setState({ productArr: res[0].data });
-                console.log(res);
+                //console.log(res);
             }
         ).catch(
             err => {

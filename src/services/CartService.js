@@ -8,6 +8,10 @@ class CartService {
     createCart(cartItems) {
         return axios.get(CORS_ANYWHERE + CART_BASE_URL, cartItems);
     }
+
+    getCart(userId) {
+        return axios.get(CORS_ANYWHERE + CART_BASE_URL);
+    }
 }
 
 export default new CartService()
