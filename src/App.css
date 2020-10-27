@@ -29,11 +29,10 @@
 
 .product-list {
   padding-bottom: 25px;
-  margin-left: 1px !important;
+  margin-left: 0 !important;
 }
 
 .product-card {
-  margin-left: 0.01px;
   margin-bottom: 10px;
   margin-top: 20px;
   padding-bottom: 10px;

@@ -67,7 +67,7 @@ class ViewProduct extends Component {
                                 <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
                             </div>
                             <div className="row">
-                                <div className="col-sm-6"><img className="pimage" alt="" src="../images/1001.webp" /></div>
+                                <div className="col-sm-6"><img className="pimage" alt="" src={'../images/' + this.state.product.itemId + '.jpg'} /></div>
                                 <div className="col-sm-6">
                                     <br></br>
                                     <div className="left">
