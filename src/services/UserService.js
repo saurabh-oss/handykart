@@ -8,6 +8,10 @@ class UserService {
     registerUser(userObj) {
         return axios.post(CORS_ANYWHERE + USER_API_BASE_URL, userObj);
     }
+
+    loginUser(userObj) {
+        return axios.get(CORS_ANYWHERE + USER_API_BASE_URL + '/authUser/' + userObj.userName + '/' + userObj.userPass);
+    }
 }
 
 export default new UserService()

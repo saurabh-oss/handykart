@@ -54,7 +54,7 @@ class ListProducts extends Component {
                         {
                             this.state.productArr.map(
                                 prod => 
-                                <div className="col-sm-4 card product-card">
+                                <div key={prod.itemId} className="col-sm-4 card product-card">
                                     <div className="row container-fluid">
                                         <div className="col-sm-9 left product-header">
                                             <a href={"product/"+prod.itemId}><h5>{ prod.title }</h5></a>
@@ -73,29 +73,29 @@ class ListProducts extends Component {
             } else {
                 return (
                     <div className="page-loader">
-                        <div class="spinner-grow text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-primary" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-secondary" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-secondary" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-success" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-success" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-danger" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-danger" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-warning" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-warning" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-info" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-info" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-success" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-success" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-dark" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-dark" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
                     </div>
                 );
