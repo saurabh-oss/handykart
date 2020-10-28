@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-class Billing extends Component {
+class Shipping extends Component {
     placeOrder() {
         this.props.history.push('/order');
     }
 
     render() {
         return(
-            <div className="billing-form">
+            <div className="shipping-form">
                 <br></br>
-                <h3>Billing Details:</h3>
+                <h3>Shipping Details:</h3>
                 <hr></hr>
                 <form>
                     <div class="form-row">
@@ -59,4 +59,4 @@ const cartItems = [
     },
 ]
 
-export default Billing
+export default Shipping
