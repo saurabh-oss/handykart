@@ -18,7 +18,6 @@ function App () {
         <div className="App">
             <Router>
                 <Header />
-                <Search />
                 <div>
                     <Switch>
                         <Route path="/" exact component={ListProducts}></Route>

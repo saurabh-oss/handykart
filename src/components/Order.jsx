@@ -17,10 +17,10 @@ class Order extends Component {
                     <br></br>
                     <tbody>
                         <tr>
-                            <td scope="col"><h5>Product</h5></td>
-                            <td scope="col"><h5>Unit Price</h5></td>
-                            <td scope="col"><h5>Quantity</h5></td>
-                            <td scope="col"><h5>Price</h5></td>
+                            <td><h5>Product</h5></td>
+                            <td><h5>Unit Price</h5></td>
+                            <td><h5>Quantity</h5></td>
+                            <td><h5>Price</h5></td>
                         </tr>
                         <tr>
                             <td>{cartItems[0].name}</td>

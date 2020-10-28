@@ -1,3 +1,9 @@
+.category {
+  border: none;
+  background-color: transparent;
+  color: blue;
+}
+
 .shipping-form {
   width: 90%;
   margin-left: 50px;

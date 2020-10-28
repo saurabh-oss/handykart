@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
+import CookieService from '../services/CookieService';
 
 class Header extends Component {
     constructor(props) {
@@ -11,34 +12,25 @@ class Header extends Component {
             forReload: ''
         };
     }
-    
+
     componentDidMount() {
-        var cookieKeyValue = null;
-        var userName = '';
-        var userEmail = '';
-
         if (document.cookie) {
-            cookieKeyValue = document.cookie.split(';');
-            for(var i = 0; i < cookieKeyValue.length; i++) {
-                var cav = cookieKeyValue[i];
-                var ca = cav.split('=');
+            var result = CookieService.getUserDtls();
 
-                if(ca[0].trim() === "hkuser") {
-                    userName = ca[1];
-                }
-                if(ca[0].trim() === "hkemail") {
-                    userEmail = ca[1];
-                }
-            }
-            if(userName.length > 0 && userEmail.length > 0) {
-                this.setState({ isUserLoggedIn: true });
-                this.setState({ userName: userName });
-                this.setState({ userEmail: userEmail });
+            if(result.isUserLoggedIn && result.userName.length > 0 && result.userEmail.length > 0) {
+                this.setCookieAfterLogin(result);
             } else {
                 this.setState({ isUserLoggedIn: false });
                 this.setState({ userName: ''});
+                this.setState({ userEmail: ''});
             }
         }
+    }
+
+    async setCookieAfterLogin(result) {
+        this.setState({ isUserLoggedIn: true });
+        this.setState({ userName: result.userName });
+        this.setState({ userEmail: result.userEmail });
     }
 
     render() {
@@ -65,7 +57,7 @@ class Header extends Component {
                     <nav className="navbar navbar-dark bg-dark">
                         <img src={logo} className="App-logo" alt="logo" />
                         <span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
-                        <div className="welcome"><i>Welcome</i>, <b>{this.state.userName}</b>&nbsp;😎</div>
+                        <div className="welcome" id="wlcm" value=""><i>Welcome</i>, <b>{this.state.userName}</b>&nbsp;😎</div>
                         <div></div>
                         <div></div>
                         <div></div>

@@ -44,19 +44,4 @@ class Shipping extends Component {
     }
 }
 
-const cartItems = [
-    {
-        itemId: 1001,
-        name: "Sky Blue Silk Cotton Chanderi Saree",
-        price: '7250',
-        quantity: 2
-    },
-    {
-        itemId: 1002,
-        name: "Royal Blue Silk Rajkot Ikat-Patola Saree",
-        price: '19000',
-        quantity: 3
-    },
-]
-
 export default Shipping
