@@ -12,6 +12,26 @@ class ListProducts extends Component {
         this.listProducts = this.listProducts.bind(this);
     }
 
+    filterByTitle() {
+        var searchTerm = document.getElementById('searchTerm').value;
+        alert(searchTerm);
+        Promise.all(
+            [ProductService.searchProductsByTitle(searchTerm)]
+        ).then(
+            (res) => {
+                this.setState({ productArr: res[0].data });
+                console.log(res);
+            }
+        ).catch(
+            err => {
+                this.setState({ serviceUnavailable: true })
+                console.log(err.code);
+                console.log(err.message);
+                console.log(err.stack);
+            }
+        );
+    }
+
     filterByCategory(searchTerm) {
         Promise.all(
             [ProductService.searchProductsByCategory(searchTerm)]
@@ -126,8 +146,8 @@ class ListProducts extends Component {
         return(
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <form className="form-inline">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <input id="searchTerm" className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button className="btn btn-outline-success my-2 my-sm-0" type="button" onClick={() => this.filterByTitle()}>Search</button>
                 </form>
                 <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul className="nav justify-content-end">

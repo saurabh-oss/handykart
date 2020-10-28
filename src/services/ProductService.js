@@ -9,6 +9,11 @@ class ProductService {
         return axios.get(PRODUCT_API_BASE_URL + 'search/cat/' + searchTerm);
     }
 
+    // List of products based on product title
+    searchProductsByTitle(searchTerm) {
+        return axios.get(PRODUCT_API_BASE_URL + 'search/title/' + searchTerm);
+    }
+
     // List of all products with all attributes
     listProducts() {
         return axios.get(PRODUCT_API_BASE_URL);
