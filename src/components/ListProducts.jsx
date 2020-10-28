@@ -31,6 +31,10 @@ class ListProducts extends Component {
     }
 
     componentDidMount() {
+        this.fetchAllProducts();
+    }
+
+    fetchAllProducts() {
         Promise.all(
             [ProductService.listProducts()]
         ).then(
@@ -128,7 +132,7 @@ class ListProducts extends Component {
                 <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul className="nav justify-content-end">
                         <li className="nav-item">
-                            <a className="nav-link" href="#"><b><u>Categories:</u></b></a>
+                            <button className="nav-link category" onClick={() => this.fetchAllProducts()}><b><u>All Categories</u></b></button>
                         </li>
                         <li className="nav-item">
                             <button className="nav-link category" onClick={() => this.filterByCategory('Dress Material')}>Dress Material</button>

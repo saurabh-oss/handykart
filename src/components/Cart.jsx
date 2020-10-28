@@ -27,6 +27,7 @@ class Cart extends Component {
                 ).then(
                     (res) => {
                         console.log(res);
+                        
                         this.setState({
                             cartItems: res[0].data.prodDetails,
                             isCartEmpty: false
