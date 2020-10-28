@@ -10,6 +10,8 @@ import Login from './components/Login';
 import Cart from './components/Cart';
 import Logout from './components/Logout';
 import Search from './components/Search';
+import Order from './components/Order';
+import Billing from './components/Billing';
 
 function App () {
     return (
@@ -25,6 +27,8 @@ function App () {
                         <Route path="/login" component={Login}></Route>
                         <Route path="/logout" component={Logout}></Route>
                         <Route path="/cart" component={Cart}></Route>
+                        <Route path="/billing" component={Billing}></Route>
+                        <Route path="/order" component={Order}></Route>
                         {}
                     </Switch>
                 </div>

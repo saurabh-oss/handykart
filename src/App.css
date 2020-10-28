@@ -1,3 +1,9 @@
+.billing-form {
+  width: 90%;
+  margin-left: 50px;
+  min-height: 390px;
+}
+
 #hideDiv {
   animation: hideMessage 0s 5s forwards;
   visibility: visible;

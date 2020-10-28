@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProductService from '../services/ProductService';
+import CartService from '../services/CartService';
 
 class ListProducts extends Component {
     constructor(props) {
@@ -33,6 +34,26 @@ class ListProducts extends Component {
         this.props.history.push('/');
     }
 
+    addToCart(obj){
+        alert(obj);
+        var payload = {
+            itemId: obj,
+            qntyChange: 1
+        };
+        CartService.createCart(payload).then(
+            (res) => {
+                console.log('cart updated');
+            }
+        ).catch(
+            err => {
+                this.setState({ serviceUnavailable: true })
+                console.log(err.code);
+                console.log(err.message);
+                console.log(err.stack);
+            }
+        );
+    }
+
     render() {
         if(this.state.serviceUnavailable === true) {
             return(
@@ -64,7 +85,7 @@ class ListProducts extends Component {
                                         </div>
                                     </div>
                                     <div><img className="pimage" alt="" src={'../images/' + prod.itemId + '.jpg'} /></div>
-                                    <button className="btn btn-dark product-add">Add to Cart</button>
+                                    <button className="btn btn-dark product-add" onClick={() => this.addToCart(prod.itemId)}>Add to Cart</button>
                                 </div>
                             )
                         }

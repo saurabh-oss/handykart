@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 class Search extends Component {
+    filterByCategory() {
+        //
+    }
+
     render() {
         return(
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -14,16 +18,16 @@ class Search extends Component {
                             <a className="nav-link" href="#"><b><u>Categories:</u></b></a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Dress Material</a>
+                            <a className="nav-link" href="/">Dress Material</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Home Decor</a>
+                            <a className="nav-link" href="/">Home Decor</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Masks</a>
+                            <a className="nav-link" href="/">Masks</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Silk Sarees</a>
+                            <a className="nav-link" href="/">Silk Sarees</a>
                         </li>
                     </ul>
                 </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProductService from '../services/ProductService';
+import CartService from '../services/CartService';
 
 class ViewProduct extends Component {
     constructor(props) {
@@ -38,8 +39,24 @@ class ViewProduct extends Component {
         this.props.history.push(`/product/${id}`);
     }
 
-    addToCart() {
-        alert('added to cart');
+    addToCart(obj) {
+        alert(obj);
+        var payload = {
+            itemId: obj,
+            qntyChange: 1
+        };
+        CartService.createCart(payload).then(
+            (res) => {
+                console.log('cart updated');
+            }
+        ).catch(
+            err => {
+                this.setState({ serviceUnavailable: true })
+                console.log(err.code);
+                console.log(err.message);
+                console.log(err.stack);
+            }
+        );
     }
 
     render() {
@@ -67,7 +84,7 @@ class ViewProduct extends Component {
                                 <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
                             </div>
                             <div className="row">
-                                <div className="col-sm-6"><img className="pimage" alt="" src={'../images/' + this.state.product.itemId + '.jpg'} /></div>
+                                <div className="col-sm-6"><img alt="" src={'../images/' + this.state.product.itemId + '.jpg'} /></div>
                                 <div className="col-sm-6">
                                     <br></br>
                                     <div className="left">
@@ -75,11 +92,15 @@ class ViewProduct extends Component {
                                     </div>
                                     <br></br>
                                     <div className="left">
+                                        <i><b>Stock: </b></i>Only {this.state.product.inventory} items left !
+                                    </div>
+                                    <br></br>
+                                    <div className="left">
                                         <h5><i>Description: </i></h5>{this.state.product.description}
                                     </div>
                                 </div>
                             </div>
-                            <button className="btn btn-dark product-add" onClick={() => this.addToCart()}>Add to Cart</button>
+                            <button className="btn btn-dark product-add" onClick={() => this.addToCart(this.state.product.itemId)}>Add to Cart</button>
                             <div className="product-review">
                                 <h5><i>Reviews:</i></h5>
                                 <br></br>

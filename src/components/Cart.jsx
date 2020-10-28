@@ -1,16 +1,53 @@
 import React, { Component } from 'react';
+import CartService from '../services/CartService';
 
 class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cart: []
+            cart: [],
+            serviceUnavailable: false
         }
-        
+        this.viewCart = this.viewCart.bind(this);
     }
 
     viewCart(id) {
         this.props.history.push('/cart');
+    }
+
+    reduceQnty(obj) {
+        var payload = {
+            itemId: obj,
+            qntyChange: -1
+        };
+        this.updateCart(obj);
+    }
+
+    addQnty(obj) {
+        var payload = {
+            itemId: obj,
+            qntyChange: 1
+        };
+        this.updateCart(payload);
+    }
+
+    updateCart(payload) {
+        CartService.createCart(payload).then(
+            (res) => {
+                console.log('cart updated');
+            }
+        ).catch(
+            err => {
+                this.setState({ serviceUnavailable: true })
+                console.log(err.code);
+                console.log(err.message);
+                console.log(err.stack);
+            }
+        );
+    }
+
+    checkout() {
+        this.props.history.push('/billing');
     }
 
     render() {
@@ -31,14 +68,14 @@ class Cart extends Component {
                             <td>{cartItems[0].name}</td>
                             <td>₹ {cartItems[0].price}</td>
                             <td>
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <svg onClick={() => this.reduceQnty(this)} width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                     <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                                 &nbsp;&nbsp;&nbsp;
-                                <input className="quantity" value={cartItems[0].quantity}></input>
+                                <input id={cartItems[0].itemId} className="quantity" value={cartItems[0].quantity}></input>
                                 &nbsp;&nbsp;&nbsp;
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <svg onClick={() => this.addQnty(cartItems[0].itemId)} width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                     <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
@@ -75,6 +112,9 @@ class Cart extends Component {
                         </tr>
                     </thead>
                 </table>
+                <div>
+                    <button type="button" onClick={() => this.checkout()} class="btn btn-success">Proceed to Checkout</button>
+                </div>
             </div>
         );
     }
@@ -82,11 +122,13 @@ class Cart extends Component {
 
 const cartItems = [
     {
+        itemId: 1001,
         name: "Sky Blue Silk Cotton Chanderi Saree",
         price: '7250',
         quantity: 2
     },
     {
+        itemId: 1002,
         name: "Royal Blue Silk Rajkot Ikat-Patola Saree",
         price: '19000',
         quantity: 3

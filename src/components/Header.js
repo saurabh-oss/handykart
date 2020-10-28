@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 
@@ -7,24 +6,34 @@ class Header extends Component {
         super(props);
         this.state = {
             isUserLoggedIn: false,
-            userName: ''
+            userName: '',
+            userEmail: '',
+            forReload: ''
         };
     }
     
     componentDidMount() {
-        var userEQ = "user=";
-        var ca = null;
+        var cookieKeyValue = null;
         var userName = '';
+        var userEmail = '';
 
         if (document.cookie) {
-            ca = document.cookie.split(';');
-            for(var i=0; i<ca.length;i++) {
-                var c = ca[0];
-                userName = c.substring(userEQ.length,c.length);
+            cookieKeyValue = document.cookie.split(';');
+            for(var i = 0; i < cookieKeyValue.length; i++) {
+                var cav = cookieKeyValue[i];
+                var ca = cav.split('=');
+
+                if(ca[0].trim() === "hkuser") {
+                    userName = ca[1];
+                }
+                if(ca[0].trim() === "hkemail") {
+                    userEmail = ca[1];
+                }
             }
-            if(userName.length > 0) {
+            if(userName.length > 0 && userEmail.length > 0) {
                 this.setState({ isUserLoggedIn: true });
                 this.setState({ userName: userName });
+                this.setState({ userEmail: userEmail });
             } else {
                 this.setState({ isUserLoggedIn: false });
                 this.setState({ userName: ''});
@@ -61,6 +70,7 @@ class Header extends Component {
                         <div></div>
                         <div></div>
                         <a className="menu" href="/">Home</a>
+                        <a className="menu" href="#">My Orders</a>
                         <a className="menu" href="/logout">Logout</a>
                         <a href="/cart" className="cart-icon right">
                             <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-cart3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

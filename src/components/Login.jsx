@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import UserService from '../services/UserService';
-import Header from './Header';
 import './Register.css';
 
 class Login extends Component {
@@ -27,7 +26,8 @@ class Login extends Component {
         UserService.loginUser(payload).then(
             (res) => {
                 console.log(res.data.userFullName);
-                document.cookie = 'user=' + res.data.userFullName + ';path=/';
+                document.cookie = 'hkuser=' + res.data.userFullName + ';path=/';
+                document.cookie = 'hkemail=' + res.data.userEmailId + ';path=/';
                 this.props.history.push('/');
                 this.props.message = 'login';
             }
