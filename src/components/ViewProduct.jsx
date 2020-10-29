@@ -82,6 +82,8 @@ class ViewProduct extends Component {
                     }
                 );
             }
+        } else {
+            alert('Please login');
         }
     }
 
@@ -122,7 +124,7 @@ class ViewProduct extends Component {
                                 <div className="col-sm-6"><h3 className="left product-header">{this.state.product.title}</h3></div>
                                 <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
                             </div>
-                            
+
                             {this.renderProductView()}
 
                             <button className="btn btn-dark product-add" onClick={() => this.addToCart(this.state.product.itemId)}>Add to Cart</button>

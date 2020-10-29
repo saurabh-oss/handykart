@@ -3,6 +3,7 @@ import ProductService from '../services/ProductService';
 import CartService from '../services/CartService';
 import ServiceUnavailable from './common/ServiceUnavailable';
 import Loader from './common/Loader';
+import CookieService from '../services/CookieService';
 
 class ListProducts extends Component {
     constructor(props) {
@@ -78,23 +79,32 @@ class ListProducts extends Component {
     }
 
     addToCart(obj){
-        alert(obj);
-        var payload = {
-            itemId: obj,
-            qntyChange: 1
-        };
-        CartService.createCart(payload).then(
-            (res) => {
-                console.log('cart updated');
+        if (document.cookie) {
+            var result = CookieService.getUserDtls();
+
+            if(result.isUserLoggedIn) {
+                var payload = {
+                    userId: result.userEmail,
+                    productList:  [obj],
+                    qtyList:  ["1"]
+                };
+                CartService.createCart(payload).then(
+                    (res) => {
+                        console.log('cart updated');
+                        this.props.history.push('/cart');
+                    }
+                ).catch(
+                    err => {
+                        this.setState({ serviceUnavailable: true })
+                        console.log(err.code);
+                        console.log(err.message);
+                        console.log(err.stack);
+                    }
+                );
             }
-        ).catch(
-            err => {
-                this.setState({ serviceUnavailable: true })
-                console.log(err.code);
-                console.log(err.message);
-                console.log(err.stack);
-            }
-        );
+        } else {
+            alert('Please login');
+        }
     }
 
     renderSearch() {

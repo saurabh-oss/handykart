@@ -9,8 +9,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
 import Logout from './components/Logout';
-import Order from './components/Order';
-import Shipping from './components/Shipping';
+import ViewOrder from './components/ViewOrder';
 
 function App () {
     return (
@@ -25,8 +24,7 @@ function App () {
                         <Route path="/login" component={Login}></Route>
                         <Route path="/logout" component={Logout}></Route>
                         <Route path="/cart" component={Cart}></Route>
-                        <Route path="/billing" component={Shipping}></Route>
-                        <Route path="/order" component={Order}></Route>
+                        <Route path="/order/:id" component={ViewOrder}></Route>
                         {}
                     </Switch>
                 </div>

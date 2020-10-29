@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CartService from '../services/CartService';
 import CookieService from '../services/CookieService';
+import Loader from './common/Loader';
 import ServiceUnavailable from './common/ServiceUnavailable';
 
 class Cart extends Component {
@@ -74,10 +75,6 @@ class Cart extends Component {
         );
     }
 
-    checkout() {
-        this.props.history.push('/billing');
-    }
-
     renderCartTotal() {
         return(
             <table className="table">
@@ -119,20 +116,91 @@ class Cart extends Component {
                                 <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                             </svg>
                         </td>
-                        <td>₹ {this.state.cartItems[0].price * this.state.cartItems[0].qty}</td>
+                        <td>
+                            ₹ {this.state.cartItems[0].price * this.state.cartItems[0].qty}
+                            <input type="hidden" id="orderTotal" value={this.state.cartItems[0].price * this.state.cartItems[0].qty} />
+                        </td>
                     </tr>
                 </tbody>
             </table>
         );
     }
 
+    renderShippingForm() {
+        return(
+            <div className="shipping-form" id="shipping-form">
+                <br></br>
+                <h3>Shipping Details:</h3>
+                <hr></hr>
+                <form>
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label htmlFor="inputAddress">Address Line 1</label>
+                            <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label htmlFor="inputAddress2">Address Line 2</label>
+                            <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label htmlFor="inputCity">City</label>
+                            <input type="text" className="form-control" id="inputCity" />
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label htmlFor="inputState">State</label>
+                            <input type="text" className="form-control" id="inputState" />
+                        </div>
+                        <div className="form-group col-md-2">
+                        <label htmlFor="inputZip">Zip</label>
+                        <input type="text" className="form-control" id="inputZip" />
+                        </div>
+                    </div>
+                    <br></br>
+                    <button type="button" className="btn btn-success" onClick={() => this.placeOrder()}>Place Order</button>
+                </form>
+            </div>
+        );
+    }
+
+    placeOrder() {
+        if (document.cookie) {
+            var result = CookieService.getUserDtls();
+            var cartItems = this.state.cartItems;
+            var today = new Date().toISOString().slice(0, 10)
+            var someNumber = Math.floor((Math.random() * 9999999) + 1);;
+            
+            if(result.isUserLoggedIn) {
+                var payload = {   
+                    userId: result.userEmail,
+                    productList: [cartItems[0].itemId],
+                    orderAmt: document.getElementById("orderTotal").value,
+                    orderId: someNumber,
+                    orderDate: today,
+                    qtyList:  [2]
+                };
+                
+                Promise.all([CartService.createOrder(payload)]).then(
+                    (res) => {
+                        console.log('Order created');
+                        this.props.history.push('/order/' + someNumber);
+                    }
+                ).catch(
+                    err => {
+                        this.setState({ serviceUnavailable: true })
+                        console.log(err.code);
+                        console.log(err.message);
+                        console.log(err.stack);
+                    }
+                );
+            }
+        }
+    }
+
     render() {
         if(this.serviceUnavailable === true) {
-            return(
-                <div>
-                    <ServiceUnavailable />
-                </div>
-            );
+            return(<ServiceUnavailable />);
         } else {
             if(this.state.cartItems.length > 0) {
                 return(
@@ -146,25 +214,28 @@ class Cart extends Component {
                             <hr></hr>
                             
                             {this.renderCartTotal()}
-    
+                            
                             <div>
-                                <button type="button" onClick={() => this.checkout()} className="btn btn-success">Proceed to Checkout</button>
+                                <a href="#shipping-form"><button type="button" className="btn btn-success">Proceed to Checkout</button></a>
                             </div>
                         </div>
+                        {this.renderShippingForm()}
                     </div>
                 );
             } else {
-                return(
-                    <div className="service-unavailable">
-                        <br></br>
-                        It seems, there are no items in the Cart yet 😟
-                        <br></br>
-                        Have a look into our Collection.
-                    </div>
-                );
+                return(<Loader />);
             }
         }
     }
 }
 
 export default Cart
+
+/**
+<div className="service-unavailable">
+    <br></br>
+    It seems, there are no items in the Cart yet 😟
+    <br></br>
+    Have a look into our Collection.
+</div>
+ */

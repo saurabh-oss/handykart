@@ -26,10 +26,14 @@ class Login extends Component {
         UserService.loginUser(payload).then(
             (res) => {
                 console.log(res.data.userFullName);
-                document.cookie = 'hkuser=' + res.data.userFullName + ';path=/';
-                document.cookie = 'hkemail=' + res.data.userEmailId + ';path=/';
-                this.props.history.push('/');
-                this.props.message = 'login';
+                if(res.data.userFullName !== undefined && res.data.userFullName !== 'undefined') {
+                    document.cookie = 'hkuser=' + res.data.userFullName + ';path=/';
+                    document.cookie = 'hkemail=' + res.data.userEmailId + ';path=/';
+                    this.props.history.push('/');
+                    this.props.message = 'login';
+                } else {
+                    alert('Invalid user');
+                }
             }
         ).catch(
             err => {
