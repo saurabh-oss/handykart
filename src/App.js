@@ -9,7 +9,6 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
 import Logout from './components/Logout';
-import Search from './components/Search';
 import Order from './components/Order';
 import Shipping from './components/Shipping';
 
