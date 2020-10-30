@@ -31,6 +31,7 @@ class Cart extends Component {
                         this.setState({
                             cartItems: res[0].data.prodDetails
                         });
+                        document.getElementById('shipping').style.display = "none";
                     }
                 ).catch(
                     err => {
@@ -128,7 +129,7 @@ class Cart extends Component {
 
     renderShippingForm() {
         return(
-            <div className="shipping-form" id="shipping-form">
+            <div className="shipping-form" id="shipping">
                 <br></br>
                 <h3>Shipping Details:</h3>
                 <hr></hr>
@@ -198,6 +199,17 @@ class Cart extends Component {
         }
     }
 
+    showShippingForm() {
+        if(document.getElementById('shipping').style.display === "none") {
+            document.getElementById('shipping').style.display = "block";
+            document.getElementById('cart').style.marginBottom = "0";
+        }
+        else {
+            document.getElementById('shipping').style.display = "none";
+            document.getElementById('cart').style.marginBottom = "140px";
+        }
+    }
+
     render() {
         if(this.serviceUnavailable === true) {
             return(<ServiceUnavailable />);
@@ -205,7 +217,7 @@ class Cart extends Component {
             if(this.state.cartItems.length > 0) {
                 return(
                     <div>
-                        <div className="cart-table">
+                        <div className="cart-table" id="cart">
                             <br></br>
         
                             {this.renderCartItemsTable()}
@@ -216,7 +228,8 @@ class Cart extends Component {
                             {this.renderCartTotal()}
                             
                             <div>
-                                <a href="#shipping-form"><button type="button" className="btn btn-success">Proceed to Checkout</button></a>
+                                <a href="#shipping-form"><button type="button" className="btn btn-success" onClick={() => this.showShippingForm()}>
+                                Proceed to Checkout</button></a>
                             </div>
                         </div>
                         {this.renderShippingForm()}
