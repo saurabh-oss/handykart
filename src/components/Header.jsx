@@ -105,7 +105,7 @@ class Header extends Component {
                         </a>
                     </nav>
                     <nav className="navbar navbar-dark bg-dark login-form" id="login-nav">
-                        <form className="form-inline">
+                        <form className="form-inline was-validated">
                             <input id="email" type="email" className="form-control" placeholder="Email Address" required="required" />
                             &nbsp;&nbsp;&nbsp;
                             <input id="password" type="password" className="form-control" placeholder="Password" required="required" />

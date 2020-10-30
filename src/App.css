@@ -1,5 +1,5 @@
 .login-form {
-  padding-left: 820px !important;
+  padding-left: 790px !important;
 }
 
 #login-btn:focus {
@@ -136,7 +136,9 @@ html {
 }
 
 .App-logo {
-  height: 12vmin;
+  /*height: 12vmin;*/
+  height: 100px;
+  width: 125px;
   pointer-events: none;
   align-self: flex-start;
 }
@@ -149,7 +151,6 @@ html {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  margin-bottom: 25px;
 }
 
 @keyframes hideMessage { to { visibility: hidden; }}

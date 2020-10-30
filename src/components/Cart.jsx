@@ -9,7 +9,9 @@ class Cart extends Component {
         super(props);
         this.state = {
             cartItems: [],
-            serviceUnavailable: false
+            orderTotal: 0,
+            serviceUnavailable: false,
+            guestUser: false
         }
         this.viewCart = this.viewCart.bind(this);
     }
@@ -19,6 +21,8 @@ class Cart extends Component {
     }
 
     componentDidMount() {
+        var orderTotal = 0;
+        var cartItems = [];
         if (document.cookie) {
             var result = CookieService.getUserDtls();
 
@@ -28,8 +32,13 @@ class Cart extends Component {
                 ).then(
                     (res) => {
                         //console.log(res);
+                        cartItems = res[0].data.prodDetails;
+                        for(var i=0; i < cartItems.length; i++) {
+                            orderTotal = orderTotal + cartItems[i].price * cartItems[i].qty;
+                        }
                         this.setState({
-                            cartItems: res[0].data.prodDetails
+                            cartItems: cartItems,
+                            orderTotal: orderTotal
                         });
                         document.getElementById('shipping').style.display = "none";
                     }
@@ -41,30 +50,50 @@ class Cart extends Component {
                         console.log(err.stack);
                     }
                 )
+            } else{
+                this.setState({ guestUser: true });
             }
         }
     }
-    /*
+    
     reduceQnty(obj) {
-        var payload = {
-            itemId: obj,
-            qntyChange: -1
-        };
-        this.updateCart(obj);
+        if (document.cookie) {
+            var result = CookieService.getUserDtls();
+
+            if(result.isUserLoggedIn) {
+                var payload = {
+                    userId: result.userEmail,
+                    productList: [obj],
+                    qtyList: [-1]
+                };
+                console.log(payload);
+                this.updateCart(payload);
+            }
+        }
     }
 
     addQnty(obj) {
-        var payload = {
-            itemId: obj,
-            qntyChange: 1
-        };
-        this.updateCart(payload);
+        if (document.cookie) {
+            var result = CookieService.getUserDtls();
+
+            if(result.isUserLoggedIn) {
+                var payload = {
+                    userId: result.userEmail,
+                    productList: [obj],
+                    qtyList: [1]
+                };
+                console.log(payload);
+                this.updateCart(payload);
+            }
+        }
     }
-    */
+    
     updateCart(payload) {
         CartService.createCart(payload).then(
             (res) => {
                 console.log('cart updated');
+                this.props.history.push('/home');
+                this.props.history.push('/cart');
             }
         ).catch(
             err => {
@@ -76,17 +105,38 @@ class Cart extends Component {
         );
     }
 
-    renderCartTotal() {
-        return(
-            <table className="table">
-                <thead className="thead-light">
-                    <tr>
-                        <th scope="col"><h3>Total Amount</h3></th>
-                        <th scope="col"><h3>₹ {this.state.cartItems[0].price * this.state.cartItems[0].qty}</h3></th>
-                    </tr>
-                </thead>
-            </table>
-        );
+    placeOrder() {
+        if (document.cookie) {
+            var result = CookieService.getUserDtls();
+            var cartItems = this.state.cartItems;
+            var today = new Date().toISOString().slice(0, 10)
+            var someNumber = Math.floor((Math.random() * 9999999) + 1);;
+            
+            if(result.isUserLoggedIn) {
+                var payload = {   
+                    userId: result.userEmail,
+                    productList: [cartItems[0].itemId],
+                    orderAmt: document.getElementById("orderTotal").value,
+                    orderId: someNumber,
+                    orderDate: today,
+                    qtyList:  [2]
+                };
+                
+                CartService.createOrder(payload).then(
+                    (res) => {
+                        console.log('Order created');
+                        this.props.history.push('/order/' + someNumber);
+                    }
+                ).catch(
+                    err => {
+                        this.setState({ serviceUnavailable: true })
+                        console.log(err.code);
+                        console.log(err.message);
+                        console.log(err.stack);
+                    }
+                );
+            }
+        }
     }
 
     renderCartItemsTable() {
@@ -101,28 +151,46 @@ class Cart extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{this.state.cartItems[0].title}</td>
-                        <td>₹ {this.state.cartItems[0].price}</td>
-                        <td>
-                            <svg onClick={() => this.reduceQnty(this)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                            </svg>
-                            &nbsp;&nbsp;&nbsp;
-                            <input id={this.state.cartItems[0].itemId} className="quantity" defaultValue={this.state.cartItems[0].qty} readOnly={true}></input>
-                            &nbsp;&nbsp;&nbsp;
-                            <svg onClick={() => this.addQnty(this.state.cartItems[0].itemId)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                        </td>
-                        <td>
-                            ₹ {this.state.cartItems[0].price * this.state.cartItems[0].qty}
-                            <input type="hidden" id="orderTotal" value={this.state.cartItems[0].price * this.state.cartItems[0].qty} />
-                        </td>
-                    </tr>
+                    {
+                        this.state.cartItems.map(
+                            listItems => 
+                            <tr key={listItems.itemId}>
+                                <td>{listItems.title}</td>
+                                <td>₹ {listItems.price}</td>
+                                <td>
+                                    <svg onClick={() => this.reduceQnty(listItems.itemId)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                    </svg>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <input id={listItems.itemId} className="quantity" defaultValue={listItems.qty} readOnly={true}></input>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <svg onClick={() => this.addQnty(listItems.itemId)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </td>
+                                <td>
+                                    ₹ {listItems.price * listItems.qty}
+                                </td>
+                            </tr>
+                        )
+                    }
+                    <tr><td><input type="hidden" id="orderTotal" value={this.state.orderTotal} /></td></tr>
                 </tbody>
+            </table>
+        );
+    }
+
+    renderCartTotal() {
+        return(
+            <table className="table">
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col"><h3>Total Amount</h3></th>
+                        <th scope="col"><h3>₹ {this.state.orderTotal}</h3></th>
+                    </tr>
+                </thead>
             </table>
         );
     }
@@ -165,40 +233,6 @@ class Cart extends Component {
         );
     }
 
-    placeOrder() {
-        if (document.cookie) {
-            var result = CookieService.getUserDtls();
-            var cartItems = this.state.cartItems;
-            var today = new Date().toISOString().slice(0, 10)
-            var someNumber = Math.floor((Math.random() * 9999999) + 1);;
-            
-            if(result.isUserLoggedIn) {
-                var payload = {   
-                    userId: result.userEmail,
-                    productList: [cartItems[0].itemId],
-                    orderAmt: document.getElementById("orderTotal").value,
-                    orderId: someNumber,
-                    orderDate: today,
-                    qtyList:  [2]
-                };
-                
-                CartService.createOrder(payload).then(
-                    (res) => {
-                        console.log('Order created');
-                        this.props.history.push('/order/' + someNumber);
-                    }
-                ).catch(
-                    err => {
-                        this.setState({ serviceUnavailable: true })
-                        console.log(err.code);
-                        console.log(err.message);
-                        console.log(err.stack);
-                    }
-                );
-            }
-        }
-    }
-
     showShippingForm() {
         if(document.getElementById('shipping').style.display === "none") {
             document.getElementById('shipping').style.display = "block";
@@ -236,19 +270,20 @@ class Cart extends Component {
                     </div>
                 );
             } else {
-                return(<Loader />);
+                if(this.state.guestUser)
+                    return(
+                        <div className="service-unavailable">
+                            <br></br>
+                            It seems, your are not logged in yet 😟
+                            <br></br>
+                            Please Register or Login !
+                        </div>
+                    );
+                else
+                    return(<Loader />);
             }
         }
     }
 }
 
 export default Cart
-
-/**
-<div className="service-unavailable">
-    <br></br>
-    It seems, there are no items in the Cart yet 😟
-    <br></br>
-    Have a look into our Collection.
-</div>
- */
