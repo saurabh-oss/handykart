@@ -1,3 +1,12 @@
+.login-form {
+  padding-left: 820px !important;
+}
+
+#login-btn:focus {
+  color: lightseagreen;
+  outline: none;
+}
+
 .category {
   border: none;
   background-color: transparent;
@@ -7,6 +16,10 @@
 .category:focus {
   color: green;
   outline: none;
+}
+
+.category:hover {
+  color: lightseagreen;
 }
 
 .shipping-form {
@@ -23,6 +36,13 @@
   animation: hideMessage 0s 5s forwards;
   visibility: visible;
   background-color: lightseagreen;
+  color: white;
+}
+
+#hideDiv2 {
+  animation: hideMessage 0s 5s forwards;
+  visibility: visible;
+  background-color: rgb(185, 59, 59);
   color: white;
 }
 
@@ -121,12 +141,6 @@ html {
   align-self: flex-start;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 12vh;
@@ -136,19 +150,6 @@ html {
   font-size: calc(10px + 2vmin);
   color: white;
   margin-bottom: 25px;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes hideMessage { to { visibility: hidden; }}

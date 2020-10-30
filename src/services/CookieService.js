@@ -3,6 +3,7 @@ class CookieService {
         var cookieKeyValue = null;
         var userName = '';
         var userEmail = '';
+        var loginTime = '';
 
         if (document.cookie) {
             cookieKeyValue = document.cookie.split(';');
@@ -16,6 +17,9 @@ class CookieService {
                 if(ca[0].trim() === "hkemail") {
                     userEmail = ca[1];
                 }
+                if(ca[0].trim() === "hklogintime") {
+                    loginTime = ca[1];
+                }
             }
 
             var obj = {};
@@ -23,13 +27,15 @@ class CookieService {
                 obj = {
                     "isUserLoggedIn": true,
                     "userName": userName,
-                    "userEmail": userEmail
+                    "userEmail": userEmail,
+                    "loginTime": loginTime
                 }
             } else {
                 obj = {
                     "isUserLoggedIn": false,
                     "userName": '',
-                    "userEmail": ''
+                    "userEmail": '',
+                    "loginTime": ''
                 }
             }
             return obj;
