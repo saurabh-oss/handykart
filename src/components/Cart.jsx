@@ -181,7 +181,7 @@ class Cart extends Component {
                     qtyList:  [2]
                 };
                 
-                Promise.all([CartService.createOrder(payload)]).then(
+                CartService.createOrder(payload).then(
                     (res) => {
                         console.log('Order created');
                         this.props.history.push('/order/' + someNumber);

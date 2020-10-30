@@ -38,4 +38,4 @@ class CookieService {
     }
 }
 
-export default new CookieService
+export default new CookieService()
