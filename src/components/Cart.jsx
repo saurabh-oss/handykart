@@ -159,7 +159,7 @@ class Cart extends Component {
                         </div>
                     </div>
                     <br></br>
-                    <button type="button" className="btn btn-success" onClick={() => this.placeOrder()}>Place Order</button>
+                    <button type="button" className="btn btn-success" onClick={() => this.placeOrder()}>Place your Order 👍</button>
                 </form>
             </div>
         );
