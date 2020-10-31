@@ -10,6 +10,7 @@ class ListProducts extends Component {
         super(props);
         this.state = {
             productArr: [],
+            guestUser: false,
             serviceUnavailable: false
         };
         this.listProducts = this.listProducts.bind(this);
@@ -83,6 +84,7 @@ class ListProducts extends Component {
             var result = CookieService.getUserDtls();
 
             if(result.isUserLoggedIn) {
+                this.setState({ guestUser: false });
                 var payload = {
                     userId: result.userEmail,
                     productList:  [obj],
@@ -103,7 +105,7 @@ class ListProducts extends Component {
                 );
             }
         } else {
-            alert('Please login');
+            this.setState({ guestUser: true });
         }
     }
 
@@ -153,7 +155,9 @@ class ListProducts extends Component {
                                 </div>
                             </div>
                             <div><img className="pimage" alt="" src={'../images/' + prod.itemId + '.jpg'} /></div>
-                            <button className="btn btn-dark product-add" onClick={() => this.addToCart(prod.itemId)}>Add to Cart</button>
+                            <a href="#shopHeader">
+                                <button className="btn btn-dark product-add" onClick={() => this.addToCart(prod.itemId)}>Add to Cart</button>
+                            </a>
                         </div>
                     )
                 }
@@ -173,6 +177,7 @@ class ListProducts extends Component {
             if(this.state.productArr !== null && this.state.productArr !== undefined && this.state.productArr.length > 0) {
                 return (
                     <div>
+                        { this.state.guestUser && <div id="hideDiv2" role="alert">Please Login !!</div> }
                         {this.renderSearch()}
                         {this.renderProductList()}
                     </div>

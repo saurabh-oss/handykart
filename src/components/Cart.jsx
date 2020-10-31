@@ -10,6 +10,7 @@ class Cart extends Component {
         this.state = {
             cartItems: [],
             orderTotal: 0,
+            emptyCart: false,
             serviceUnavailable: false,
             guestUser: false
         }
@@ -31,15 +32,21 @@ class Cart extends Component {
                     [CartService.getCart(result.userEmail)]
                 ).then(
                     (res) => {
-                        //console.log(res);
-                        cartItems = res[0].data.prodDetails;
-                        for(var i=0; i < cartItems.length; i++) {
-                            orderTotal = orderTotal + cartItems[i].price * cartItems[i].qty;
+                        console.log(res);
+
+                        if(res[0].data.none === 'None') {
+                            this.setState({ emptyCart: true })
+                        } else {
+                            cartItems = res[0].data.prodDetails;
+                            for(var i=0; i < cartItems.length; i++) {
+                                orderTotal = orderTotal + cartItems[i].price * cartItems[i].qty;
+                            }
+                            this.setState({
+                                cartItems: cartItems,
+                                orderTotal: orderTotal,
+                                emptyCart: false
+                            });
                         }
-                        this.setState({
-                            cartItems: cartItems,
-                            orderTotal: orderTotal
-                        });
                         document.getElementById('shipping').style.display = "none";
                     }
                 ).catch(
@@ -53,6 +60,8 @@ class Cart extends Component {
             } else{
                 this.setState({ guestUser: true });
             }
+        } else {
+            this.setState({ guestUser: true });
         }
     }
     
@@ -111,15 +120,23 @@ class Cart extends Component {
             var cartItems = this.state.cartItems;
             var today = new Date().toISOString().slice(0, 10)
             var someNumber = Math.floor((Math.random() * 9999999) + 1);;
+            var productListArr = [];
+            var qtyListArr = [];
             
             if(result.isUserLoggedIn) {
+                for(var i=0; i < cartItems.length; i++) {
+                    productListArr.push(cartItems[i].itemId);
+                    qtyListArr.push(cartItems[i].qty);
+
+                }
+
                 var payload = {   
                     userId: result.userEmail,
-                    productList: [cartItems[0].itemId],
+                    productList: productListArr,
+                    qtyList: qtyListArr,
                     orderAmt: document.getElementById("orderTotal").value,
                     orderId: someNumber,
-                    orderDate: today,
-                    qtyList:  [2]
+                    orderDate: today
                 };
                 
                 CartService.createOrder(payload).then(
@@ -270,7 +287,7 @@ class Cart extends Component {
                     </div>
                 );
             } else {
-                if(this.state.guestUser)
+                if(this.state.guestUser) {
                     return(
                         <div className="service-unavailable">
                             <br></br>
@@ -279,8 +296,19 @@ class Cart extends Component {
                             Please Register or Login !
                         </div>
                     );
-                else
-                    return(<Loader />);
+                } else {
+                    if(this.state.emptyCart) {
+                        return(
+                            <div className="service-unavailable">
+                                <br></br>
+                                You haven't added any items in your cart yet 😟
+                                <br></br>
+                                Please browse our collection and add your desired products.
+                            </div>
+                        );
+                    } else
+                        return(<Loader />);
+                }
             }
         }
     }

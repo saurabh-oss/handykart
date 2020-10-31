@@ -92,7 +92,7 @@ class Header extends Component {
         if(!this.state.isUserLoggedIn) {
             return (
                 <div>
-                    <nav className="navbar navbar-dark bg-dark">
+                    <nav id="shopHeader" className="navbar navbar-dark bg-dark">
                         <img src={logo} className="App-logo" alt="logo" />
                         <span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
                         <a className="menu" href="/">Home</a>
@@ -124,7 +124,7 @@ class Header extends Component {
         } else {
             return (
                 <div>
-                    <nav className="navbar navbar-dark bg-dark">
+                    <nav id="shopHeader" className="navbar navbar-dark bg-dark">
                         <img src={logo} className="App-logo" alt="logo" />
                         <span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
                         <div className="welcome" id="wlcm" value=""><i>Welcome</i>, <b>{this.state.userName}</b>&nbsp;😎</div>
