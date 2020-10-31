@@ -143,7 +143,7 @@
         "strategy": {
           "type": "Rolling",
 		  "rollingParams":
-			"updatePeriodSeconds":: 1,
+			"updatePeriodSeconds": 1,
 			"intervalSeconds": 1,
 			"timeoutSeconds": 600,
 			"maxUnavailable": 25%,
