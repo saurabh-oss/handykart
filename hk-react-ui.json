@@ -16,8 +16,8 @@
   },
   "message": "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/s-a-u-r-a-b-h/handykart/blob/main/README.md.",
   "labels": {
-    "template": "react-ui",
-    "app": "react-ui"
+      "template": "react-ui",
+      "app": "react-ui"
   },
   "objects": [
     {
@@ -33,14 +33,14 @@
         "ports": [
           {
             "name": "8080-tcp",
-            "protocol": "tcp",
+			      "protocol": "tcp",
             "port": 8080,
             "targetPort": 8080
           }
         ],
         "selector": {
           "app": "${NAME}",
-          "deploymentconfig": "${NAME}"
+		      "deploymentconfig": "${NAME}"
         }
       }
     },
@@ -55,7 +55,7 @@
         "to": {
           "kind": "Service",
           "name": "${NAME}",
-          "weight": 100
+    		  "weight": 100
         }
       }
     },
@@ -141,7 +141,14 @@
       },
       "spec": {
         "strategy": {
-          "type": "Recreate"
+          "type": "Rolling",
+		  "rollingParams": {
+			"updatePeriodSeconds": 1,
+			"intervalSeconds": 1,
+			"timeoutSeconds": 600,
+			"maxUnavailable": "25%",
+			"maxSurge": "25%"
+		  }
         },
         "triggers": [
           {
@@ -182,28 +189,28 @@
                     "containerPort": 8080
                   }
                 ]
-              }
+			  }
             ],
-            "readinessProbe": {
-              "timeoutSeconds": 3,
-              "initialDelaySeconds": 3,
-              "httpGet": {
-                "path": "/",
-                "port": 8080
-              }
-            },
-            "livenessProbe": {
-              "timeoutSeconds": 3,
-              "initialDelaySeconds": 30,
-              "httpGet": {
-                "path": "/",
-                "port": 8080
-              }
-            }
+			"readinessProbe": {
+			  "timeoutSeconds": 3,
+			  "initialDelaySeconds": 3,
+			  "httpGet": {
+				"path": "/",
+				"port": 8080
+			  }
+			},
+			"livenessProbe": {
+			  "timeoutSeconds": 3,
+			  "initialDelaySeconds": 30,
+			  "httpGet": {
+				"path": "/",
+				"port": 8080
+			  }
+			}
           }
         }
-      }
-    }
+       }
+	}
   ],
   "parameters": [
     {
