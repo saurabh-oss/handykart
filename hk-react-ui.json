@@ -150,19 +150,13 @@
             "imageChangeParams": 
             {
               "automatic": true,
-              "containerNames": 
-              [
-                "${NAME}"
-              ],
+              "containerNames": "${NAME}",
               "from": 
               {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:latest"
               }
             }
-          },
-          {
-            "type": "ConfigChange"
           }
         ],
         "replicas": 1,
