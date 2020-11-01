@@ -33,14 +33,14 @@
         "ports": [
           {
             "name": "8080-tcp",
-			      "protocol": "tcp",
+            "protocol": "tcp",
             "port": 8080,
             "targetPort": 8080
           }
         ],
         "selector": {
           "app": "${NAME}",
-		      "deploymentconfig": "${NAME}"
+          "deploymentconfig": "${NAME}"
         }
       }
     },
@@ -55,7 +55,7 @@
         "to": {
           "kind": "Service",
           "name": "${NAME}",
-    		  "weight": 100
+          "weight": 100
         }
       }
     },
@@ -143,15 +143,19 @@
         "strategy": {
           "type": "Recreate"
         },
-        "triggers": [
+        "triggers": 
+        [
           {
             "type": "ImageChange",
-            "imageChangeParams": {
+            "imageChangeParams": 
+            {
               "automatic": true,
-              "containerNames": [
+              "containerNames": 
+              [
                 "${NAME}"
               ],
-              "from": {
+              "from": 
+              {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:latest"
               }
@@ -162,10 +166,12 @@
           }
         ],
         "replicas": 1,
-        "selector": {
+        "selector": 
+        {
           "app": "${NAME}"
         },
-        "template": {
+        "template": 
+        {
           "metadata": {
             "name": "${NAME}",
             "labels": {
@@ -182,28 +188,28 @@
                     "containerPort": 8080
                   }
                 ]
-			  }
+              }
             ],
-			"readinessProbe": {
-			  "timeoutSeconds": 3,
-			  "initialDelaySeconds": 3,
-			  "httpGet": {
-				"path": "/",
-				"port": 8080
-			  }
-			},
-			"livenessProbe": {
-			  "timeoutSeconds": 3,
-			  "initialDelaySeconds": 30,
-			  "httpGet": {
-				"path": "/",
-				"port": 8080
-			  }
-			}
+            "readinessProbe": {
+              "timeoutSeconds": 3,
+              "initialDelaySeconds": 3,
+              "httpGet": {
+                "path": "/",
+                "port": 8080
+              }
+            },
+            "livenessProbe": {
+              "timeoutSeconds": 3,
+              "initialDelaySeconds": 30,
+              "httpGet": {
+                "path": "/",
+                "port": 8080
+              }
+            }
           }
         }
        }
-	}
+    }
   ],
   "parameters": [
     {
