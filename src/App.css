@@ -1,3 +1,7 @@
+.cart-actions {
+  cursor: pointer;
+}
+
 .orders-table {
   margin-top: 25px;
   margin-left: 75px;
@@ -6,7 +10,7 @@
 }
 
 .login-form {
-  padding-left: 790px !important;
+  padding-left: 750px !important;
 }
 
 #login-btn:focus {

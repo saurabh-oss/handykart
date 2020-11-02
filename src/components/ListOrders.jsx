@@ -56,30 +56,40 @@ class ListOrders extends Component {
             if(this.state.orderItems !== null && this.state.orderItems !== undefined && this.state.orderItems.id !== null) {
                 return(
                     <div>
-                        <div className="orders-table">
-                            <br></br>
-                            <table className="table">
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col"><h5>Order ID</h5></th>
-                                        <th scope="col"><h5>Order Date</h5></th>
-                                        <th scope="col"><h5>Order Amount</h5></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.state.orderItems.map(
-                                            order => 
-                                            <tr key={order.orderId}>
-                                                <td><a href={'/order/' + order.orderId}><b>{order.orderId}</b></a></td>
-                                                <td>{order.orderDate}</td>
-                                                <td>₹ {order.orderAmt}</td>
-                                            </tr>
-                                        )
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                        { this.state.orderItems.length > 0 &&
+                            <div className="orders-table">
+                                <br></br>
+                                <table className="table">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col"><h5>Order ID</h5></th>
+                                            <th scope="col"><h5>Order Date</h5></th>
+                                            <th scope="col"><h5>Order Amount</h5></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            this.state.orderItems.map(
+                                                order => 
+                                                <tr key={order.orderId}>
+                                                    <td><a href={'/order/' + order.orderId}><b>{order.orderId}</b></a></td>
+                                                    <td>{order.orderDate}</td>
+                                                    <td>₹ {order.orderAmt}</td>
+                                                </tr>
+                                            )
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        { this.state.orderItems.length <= 0 &&
+                            <div className="service-unavailable">
+                                <br></br>
+                                You haven't shopped with us yet. 😟
+                                <br></br>
+                                Please browse our collection and add your desired products.
+                            </div>
+                        }
                     </div>
                 )
             } else {
