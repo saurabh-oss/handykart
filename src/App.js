@@ -9,6 +9,7 @@ import Register from './components/Register';
 import Cart from './components/Cart';
 import Logout from './components/Logout';
 import ViewOrder from './components/ViewOrder';
+import ListOrders from './components/ListOrders';
 
 function App () {
     return (
@@ -23,6 +24,7 @@ function App () {
                         <Route path="/logout" component={Logout}></Route>
                         <Route path="/cart" component={Cart}></Route>
                         <Route path="/order/:id" component={ViewOrder}></Route>
+                        <Route path="/my-orders" component={ListOrders}></Route>
                         {}
                     </Switch>
                 </div>

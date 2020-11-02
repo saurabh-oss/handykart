@@ -132,7 +132,7 @@ class Header extends Component {
                         <div></div>
                         <div></div>
                         <a className="menu" href="/">Home</a>
-                        <a className="menu" href="/">My Orders</a>
+                        <a className="menu" href="/my-orders">My Orders</a>
                         <a className="menu" href="/logout">Logout</a>
                         <a href="/cart" className="cart-icon right">
                             <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-cart3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

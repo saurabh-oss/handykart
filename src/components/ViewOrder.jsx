@@ -12,7 +12,12 @@ class ViewOrder extends Component {
             orderId: '',
             orderDate: '',
             orderTotal: '',
-            serviceUnavailable: false,
+            addressLine1: '',
+            addressLine2: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            serviceUnavailable: false
         }
         this.viewOrder = this.viewOrder.bind(this);
     }
@@ -33,7 +38,12 @@ class ViewOrder extends Component {
                                 orderItems: result[0].data.prodDetails,
                                 orderId: result[0].data.orderId,
                                 orderDate: result[0].data.orderDate,
-                                orderTotal: result[0].data.orderAmt
+                                orderTotal: result[0].data.orderAmt,
+                                addressLine1: result[0].data.addressLine1,
+                                addressLine2: result[0].data.addressLine2,
+                                city: result[0].data.city,
+                                state: result[0].data.state,
+                                zipCode: result[0].data.zipCode
                             }
                         );
                         //console.log(this.state.orderItems[0]);
@@ -75,7 +85,6 @@ class ViewOrder extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td><br></br></td></tr>
                                     <tr>
                                         <td><h5>Product</h5></td>
                                         <td><h5>Unit Price</h5></td>
@@ -98,6 +107,18 @@ class ViewOrder extends Component {
                                 </tbody>
                             </table>
                             <hr></hr>
+                            <table className="table">
+                                <tr>
+                                    <td>
+                                        <b>Shipping Address: </b>
+                                        {this.state.addressLine1},&nbsp;
+                                        {this.state.addressLine2},&nbsp;
+                                        {this.state.city},&nbsp;
+                                        {this.state.state},&nbsp;
+                                        {this.state.zipCode}
+                                    </td>
+                                </tr>
+                            </table>
                             <hr></hr>
                             <table className="table">
                                 <thead className="thead-light">

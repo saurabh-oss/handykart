@@ -143,18 +143,17 @@ class ViewProduct extends Component {
                                     <div className="product-review">
                                         <h5><i>Reviews:</i></h5>
                                         <br></br>
-                                        {
-                                        this.state.reviews.map(
+                                        {this.state.reviews.length > 0 && this.state.reviews.map(
                                             review => 
-                                                <div key={ review.id }>
-                                                    <b>{ review.reviewTitle }</b>
-                                                    <br></br>
-                                                    { review.reviewMessage }
-                                                    <br></br>
-                                                    <br></br>
-                                                </div>
-                                            )
-                                        }
+                                            <div key={ review.id }>
+                                                <b>{ review.reviewTitle }</b>
+                                                <br></br>
+                                                { review.reviewMessage }
+                                                <br></br>
+                                                <br></br>
+                                            </div>
+                                        )}
+                                        {this.state.reviews.length <= 0 && <div>There are no reviews on this product yet.</div>}
                                     </div>
                                     }
                                     { this.state.reviewServiceUnavailable && <ServiceUnavailable /> }

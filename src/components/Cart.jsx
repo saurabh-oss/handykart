@@ -65,15 +65,23 @@ class Cart extends Component {
         }
     }
     
-    reduceQnty(obj) {
+    updateQnty(obj, mode) {
         if (document.cookie) {
             var result = CookieService.getUserDtls();
+            var qntyChange = 0;
+            if(mode === 'reduce')
+                qntyChange = -1;
+            if(mode === 'add')
+                qntyChange = 1;
+            if(mode === 'delete')
+                qntyChange = -(document.getElementById(obj).value);
 
+            alert(qntyChange);
             if(result.isUserLoggedIn) {
                 var payload = {
                     userId: result.userEmail,
                     productList: [obj],
-                    qtyList: [-1]
+                    qtyList: [qntyChange]
                 };
                 console.log(payload);
                 this.updateCart(payload);
@@ -81,22 +89,6 @@ class Cart extends Component {
         }
     }
 
-    addQnty(obj) {
-        if (document.cookie) {
-            var result = CookieService.getUserDtls();
-
-            if(result.isUserLoggedIn) {
-                var payload = {
-                    userId: result.userEmail,
-                    productList: [obj],
-                    qtyList: [1]
-                };
-                console.log(payload);
-                this.updateCart(payload);
-            }
-        }
-    }
-    
     updateCart(payload) {
         CartService.createCart(payload).then(
             (res) => {
@@ -136,13 +128,31 @@ class Cart extends Component {
                     qtyList: qtyListArr,
                     orderAmt: document.getElementById("orderTotal").value,
                     orderId: someNumber,
-                    orderDate: today
+                    orderDate: today,
+                    addressLine1: document.getElementById("addressLine1").value,
+                    addressLine2: document.getElementById("addressLine2").value,
+                    city: document.getElementById("city").value,
+                    state: document.getElementById("state").value,
+                    zipCode: document.getElementById("zipCode").value
                 };
                 
                 CartService.createOrder(payload).then(
                     (res) => {
                         console.log('Order created');
                         this.props.history.push('/order/' + someNumber);
+                    }
+                ).catch(
+                    err => {
+                        this.setState({ serviceUnavailable: true })
+                        console.log(err.code);
+                        console.log(err.message);
+                        console.log(err.stack);
+                    }
+                );
+
+                CartService.deleteCart(result.userEmail).then(
+                    (resp) => {
+                        console.log('cart deleted');
                     }
                 ).catch(
                     err => {
@@ -165,6 +175,7 @@ class Cart extends Component {
                         <th scope="col"><h5>Unit Price</h5></th>
                         <th scope="col"><h5>Quantity</h5></th>
                         <th scope="col"><h5>Price</h5></th>
+                        <th scope="col"><h5></h5></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,20 +186,26 @@ class Cart extends Component {
                                 <td>{listItems.title}</td>
                                 <td>₹ {listItems.price}</td>
                                 <td>
-                                    <svg onClick={() => this.reduceQnty(listItems.itemId)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <svg onClick={() => this.updateQnty(listItems.itemId, 'reduce')} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-dash-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                         <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                     </svg>
                                     &nbsp;&nbsp;&nbsp;
                                     <input id={listItems.itemId} className="quantity" defaultValue={listItems.qty} readOnly={true}></input>
                                     &nbsp;&nbsp;&nbsp;
-                                    <svg onClick={() => this.addQnty(listItems.itemId)} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <svg onClick={() => this.updateQnty(listItems.itemId, 'add')} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-plus-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fillRule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                         <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                     </svg>
                                 </td>
                                 <td>
                                     ₹ {listItems.price * listItems.qty}
+                                </td>
+                                <td>
+                                    <svg onClick={() => this.updateQnty(listItems.itemId, 'delete')} color="red" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
                                 </td>
                             </tr>
                         )
@@ -221,26 +238,26 @@ class Cart extends Component {
                 <form>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label htmlFor="inputAddress">Address Line 1</label>
-                            <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
+                            <label htmlFor="addressLine1">Address Line 1</label>
+                            <input type="text" className="form-control" id="addressLine1" placeholder="1234 Main St" />
                         </div>
                         <div className="form-group col-md-6">
-                            <label htmlFor="inputAddress2">Address Line 2</label>
-                            <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+                            <label htmlFor="addressLine2">Address Line 2</label>
+                            <input type="text" className="form-control" id="addressLine2" placeholder="Apartment, studio, or floor" />
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label htmlFor="inputCity">City</label>
-                            <input type="text" className="form-control" id="inputCity" />
+                            <label htmlFor="city">City</label>
+                            <input type="text" className="form-control" id="city" />
                         </div>
                         <div className="form-group col-md-4">
-                            <label htmlFor="inputState">State</label>
-                            <input type="text" className="form-control" id="inputState" />
+                            <label htmlFor="state">State</label>
+                            <input type="text" className="form-control" id="state" />
                         </div>
                         <div className="form-group col-md-2">
-                        <label htmlFor="inputZip">Zip</label>
-                        <input type="text" className="form-control" id="inputZip" />
+                        <label htmlFor="zipCode">Zip</label>
+                        <input type="text" className="form-control" id="zipCode" />
                         </div>
                     </div>
                     <br></br>
@@ -273,9 +290,6 @@ class Cart extends Component {
         
                             {this.renderCartItemsTable()}
     
-                            <hr></hr>
-                            <hr></hr>
-                            
                             {this.renderCartTotal()}
                             
                             <div>

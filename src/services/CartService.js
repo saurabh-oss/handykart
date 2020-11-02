@@ -18,12 +18,20 @@ class CartService {
         return axios.get(CART_BASE_URL + 'userId/' + userEmail + '/');
     }
 
+    deleteCart(userEmail) {
+        return axios.delete(CART_BASE_URL + 'userId/' + userEmail + '/');
+    }
+
     createOrder(orderDtls) {
         return axios.post(ORDER_BASE_URL, orderDtls);
     }
 
     getOrderById(orderId) {
         return axios.get(ORDER_BASE_URL + 'searchOrderId/' + orderId);
+    }
+
+    listOrders(userEmail) {
+        return axios.get(ORDER_BASE_URL + 'searchOrderUserId/' + userEmail + '/');
     }
 }
 
