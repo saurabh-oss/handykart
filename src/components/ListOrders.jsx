@@ -70,7 +70,7 @@ class ListOrders extends Component {
                                     {
                                         this.state.orderItems.map(
                                             order => 
-                                            <tr>
+                                            <tr key={order.orderId}>
                                                 <td><a href={'/order/' + order.orderId}><b>{order.orderId}</b></a></td>
                                                 <td>{order.orderDate}</td>
                                                 <td>₹ {order.orderAmt}</td>
