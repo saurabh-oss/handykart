@@ -11,6 +11,8 @@ class ViewProduct extends Component {
         this.state = {
             product: [],
             reviews: [],
+            guestUser: false,
+            dataLoaded: false,
             productServiceUnavailable: false,
             reviewServiceUnavailable: false
         }
@@ -23,9 +25,9 @@ class ViewProduct extends Component {
             [ProductService.viewProduct(id)]
         ).then(
             (results) => {
-                //console.log(results[0]);
+                console.log(results[0]);
                 const productDetails = results[0];
-                this.setState({ product: productDetails.data });
+                this.setState({ product: productDetails.data, dataLoaded: true });
             }
         ).catch(
             err => {
@@ -83,7 +85,7 @@ class ViewProduct extends Component {
                 );
             }
         } else {
-            alert('Please login');
+            this.setState({ guestUser: true });
         }
     }
 
@@ -115,43 +117,50 @@ class ViewProduct extends Component {
                 <ServiceUnavailable />
             );
         } else {
-            if(this.state.product !== null && this.state.product !== undefined && this.state.product.id !== null) {
+            if(this.state.product !== null 
+                && this.state.product !== undefined 
+                && this.state.product.itemId !== null 
+                && this.state.product.itemId !== ""
+                && this.state.dataLoaded) {
                 return (
-                    <div className="row container-fluid">
-                        <div className="col-sm-1">&nbsp;</div>
-                        <div className="col-sm-10 card product-card">
-                            <div className="row">
-                                <div className="col-sm-6"><h3 className="left product-header">{this.state.product.title}</h3></div>
-                                <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
-                            </div>
+                    <div>
+                        { this.state.guestUser && <div id="hideDiv2" role="alert">Please Login !!</div> }
+                            <div className="row container-fluid">
+                                <div className="col-sm-1">&nbsp;</div>
+                                <div className="col-sm-10 card product-card">
+                                    <div className="row">
+                                        <div className="col-sm-6"><h3 className="left product-header">{this.state.product.title}</h3></div>
+                                        <div className="col-sm-6"><h3 className="right product-header">₹ {this.state.product.price}</h3></div>
+                                    </div>
 
-                            {this.renderProductView()}
+                                    {this.renderProductView()}
+                                
+                                    <a href="#shopHeader">
+                                        <button className="btn btn-dark product-add" onClick={() => this.addToCart(this.state.product.itemId)}>Add to Cart</button>
+                                    </a>
 
-                            <button className="btn btn-dark product-add" onClick={() => this.addToCart(this.state.product.itemId)}>Add to Cart</button>
-
-                            {!this.state.reviewServiceUnavailable &&
-                                <div className="product-review">
-                                    <h5><i>Reviews:</i></h5>
-                                    <br></br>
-                                    {
-                                    this.state.reviews.map(
-                                        review => 
-                                        <div key={ review.id }>
-                                        <b>{ review.reviewTitle }</b>
+                                    {!this.state.reviewServiceUnavailable &&
+                                    <div className="product-review">
+                                        <h5><i>Reviews:</i></h5>
                                         <br></br>
-                                        { review.reviewMessage }
-                                        <br></br>
-                                        <br></br>
-                                        </div>
-                                        )
+                                        {
+                                        this.state.reviews.map(
+                                            review => 
+                                                <div key={ review.id }>
+                                                    <b>{ review.reviewTitle }</b>
+                                                    <br></br>
+                                                    { review.reviewMessage }
+                                                    <br></br>
+                                                    <br></br>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
                                     }
+                                    { this.state.reviewServiceUnavailable && <ServiceUnavailable /> }
                                 </div>
-                            }
-                            {this.state.reviewServiceUnavailable &&
-                                <ServiceUnavailable />
-                            }
+                            <div className="col-sm-1">&nbsp;</div>
                         </div>
-                        <div className="col-sm-1">&nbsp;</div>
                     </div>
                 );
             } else {
