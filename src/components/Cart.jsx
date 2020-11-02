@@ -12,6 +12,8 @@ class Cart extends Component {
             orderTotal: 0,
             emptyCart: false,
             serviceUnavailable: false,
+            orderServiceUnavailable: false,
+            blankShippingDtls: false,
             guestUser: false
         }
         this.viewCart = this.viewCart.bind(this);
@@ -113,54 +115,65 @@ class Cart extends Component {
             var someNumber = Math.floor((Math.random() * 9999999) + 1);;
             var productListArr = [];
             var qtyListArr = [];
-            
-            if(result.isUserLoggedIn) {
-                for(var i=0; i < cartItems.length; i++) {
-                    productListArr.push(cartItems[i].itemId);
-                    qtyListArr.push(cartItems[i].qty);
 
+            var addressLine1 = document.getElementById("addressLine1").value;
+            var addressLine2 = document.getElementById("addressLine2").value;
+            var city = document.getElementById("city").value;
+            var state = document.getElementById("state").value;
+            var zipCode = document.getElementById("zipCode").value;
+
+            if(addressLine1 !== null && addressLine2 !== null && city !== null && state !== null && zipCode !== null
+                && addressLine1 !== '' && addressLine2 !== '' && city !== '' && state !== '' && zipCode !== '') {
+                if(result.isUserLoggedIn) {
+                    for(var i=0; i < cartItems.length; i++) {
+                        productListArr.push(cartItems[i].itemId);
+                        qtyListArr.push(cartItems[i].qty);
+                    }
+    
+                    var payload = {
+                        userId: result.userEmail,
+                        productList: productListArr,
+                        qtyList: qtyListArr,
+                        orderAmt: document.getElementById("orderTotal").value,
+                        orderId: someNumber,
+                        orderDate: today,
+                        addressLine1: document.getElementById("addressLine1").value,
+                        addressLine2: document.getElementById("addressLine2").value,
+                        city: document.getElementById("city").value,
+                        state: document.getElementById("state").value,
+                        zipCode: document.getElementById("zipCode").value
+                    };
+                    
+                    CartService.createOrder(payload).then(
+                        (res) => {
+                            console.log('Order created');
+                            this.props.history.push('/order/' + someNumber);
+
+                            CartService.deleteCart(result.userEmail).then(
+                                (resp) => {
+                                    console.log('cart deleted');
+                                }
+                            ).catch(
+                                err => {
+                                    this.setState({ serviceUnavailable: true })
+                                    console.log(err.code);
+                                    console.log(err.message);
+                                    console.log(err.stack);
+                                }
+                            );
+
+                        }
+                    ).catch(
+                        err => {
+                            this.setState({ orderServiceUnavailable: true })
+                            console.log(err.code);
+                            console.log(err.message);
+                            console.log(err.stack);
+                        }
+                    );
                 }
-
-                var payload = {   
-                    userId: result.userEmail,
-                    productList: productListArr,
-                    qtyList: qtyListArr,
-                    orderAmt: document.getElementById("orderTotal").value,
-                    orderId: someNumber,
-                    orderDate: today,
-                    addressLine1: document.getElementById("addressLine1").value,
-                    addressLine2: document.getElementById("addressLine2").value,
-                    city: document.getElementById("city").value,
-                    state: document.getElementById("state").value,
-                    zipCode: document.getElementById("zipCode").value
-                };
-                
-                CartService.createOrder(payload).then(
-                    (res) => {
-                        console.log('Order created');
-                        this.props.history.push('/order/' + someNumber);
-                    }
-                ).catch(
-                    err => {
-                        this.setState({ serviceUnavailable: true })
-                        console.log(err.code);
-                        console.log(err.message);
-                        console.log(err.stack);
-                    }
-                );
-
-                CartService.deleteCart(result.userEmail).then(
-                    (resp) => {
-                        console.log('cart deleted');
-                    }
-                ).catch(
-                    err => {
-                        this.setState({ serviceUnavailable: true })
-                        console.log(err.code);
-                        console.log(err.message);
-                        console.log(err.stack);
-                    }
-                );
+            } else {
+                this.setState({ blankShippingDtls: true });
             }
         }
     }
@@ -260,7 +273,7 @@ class Cart extends Component {
                         </div>
                     </div>
                     <br></br>
-                    <button type="button" className="btn btn-success" onClick={() => this.placeOrder()}>Place your Order 👍</button>
+                    <a href="#shopHeader"><button type="button" className="btn btn-success" onClick={() => this.placeOrder()}>Place your Order 👍</button></a>
                 </form>
             </div>
         );
@@ -278,12 +291,14 @@ class Cart extends Component {
     }
 
     render() {
-        if(this.serviceUnavailable === true) {
+        if(this.state.serviceUnavailable === true) {
             return(<ServiceUnavailable />);
         } else {
             if(this.state.cartItems.length > 0) {
                 return(
                     <div>
+                        { this.state.blankShippingDtls && <div id="hideDiv2" role="alert">Please provide shipping address !</div> }
+                        { this.state.orderServiceUnavailable && <div id="hideDiv2" role="alert">Sorry, Order service is currently unavailable 😟</div> }
                         <div className="cart-table" id="cart">
                             <br></br>
         

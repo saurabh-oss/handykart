@@ -48,12 +48,15 @@ class ListOrders extends Component {
     }
 
     render() {
-        if(this.state.productServiceUnavailable === true) {
+        if(this.state.serviceUnavailable === true) {
             return(
                 <ServiceUnavailable />
             );
         } else {
-            if(this.state.orderItems !== null && this.state.orderItems !== undefined && this.state.orderItems.id !== null) {
+            if(this.state.orderItems !== null
+                && this.state.orderItems !== undefined
+                && this.state.orderItems.id !== null
+                && this.state.orderItems.length > 0) {
                 return(
                     <div>
                         { this.state.orderItems.length > 0 &&

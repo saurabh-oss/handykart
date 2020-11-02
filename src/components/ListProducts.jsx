@@ -11,7 +11,9 @@ class ListProducts extends Component {
         this.state = {
             productArr: [],
             guestUser: false,
-            serviceUnavailable: false
+            serviceUnavailable: false,
+            cartServiceUnavailable: false,
+            showAlert: false
         };
         this.listProducts = this.listProducts.bind(this);
     }
@@ -35,7 +37,7 @@ class ListProducts extends Component {
             }
         ).catch(
             err => {
-                this.setState({ serviceUnavailable: true })
+                this.setState({ serviceUnavailable: true, showAlert: true })
                 console.log(err.code);
                 console.log(err.message);
                 console.log(err.stack);
@@ -53,7 +55,7 @@ class ListProducts extends Component {
             }
         ).catch(
             err => {
-                this.setState({ serviceUnavailable: true })
+                this.setState({ serviceUnavailable: true, showAlert: true })
                 console.log(err.code);
                 console.log(err.message);
                 console.log(err.stack);
@@ -97,7 +99,7 @@ class ListProducts extends Component {
                     }
                 ).catch(
                     err => {
-                        this.setState({ serviceUnavailable: true })
+                        this.setState({ cartServiceUnavailable: true })
                         console.log(err.code);
                         console.log(err.message);
                         console.log(err.stack);
@@ -171,6 +173,7 @@ class ListProducts extends Component {
         if(this.state.serviceUnavailable === true) {
             return(
                 <div>
+                    { this.state.showAlert && <div id="hideDiv2" role="alert">Sorry, Search & Filter services are currently unavailable 😟</div> }
                     {this.renderSearch()}
                     <ServiceUnavailable />
                 </div>
@@ -179,6 +182,7 @@ class ListProducts extends Component {
             if(this.state.productArr !== null && this.state.productArr !== undefined && this.state.productArr.length > 0) {
                 return (
                     <div>
+                        { this.state.cartServiceUnavailable && <div id="hideDiv2" role="alert">Sorry, Cart service is currently unavailable 😟</div> }
                         { this.state.guestUser && <div id="hideDiv2" role="alert">Please Login !!</div> }
                         {this.renderSearch()}
                         {this.renderProductList()}

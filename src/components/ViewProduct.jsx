@@ -14,7 +14,8 @@ class ViewProduct extends Component {
             guestUser: false,
             dataLoaded: false,
             productServiceUnavailable: false,
-            reviewServiceUnavailable: false
+            reviewServiceUnavailable: false,
+            cartServiceUnavailable: false
         }
         this.viewProduct = this.viewProduct.bind(this);
     }
@@ -77,7 +78,7 @@ class ViewProduct extends Component {
                     }
                 ).catch(
                     err => {
-                        this.setState({ serviceUnavailable: true })
+                        this.setState({ cartServiceUnavailable: true })
                         console.log(err.code);
                         console.log(err.message);
                         console.log(err.stack);
@@ -127,6 +128,7 @@ class ViewProduct extends Component {
                 return (
                     <div>
                         { this.state.guestUser && <div id="hideDiv2" role="alert">Please Login !!</div> }
+                        { this.state.cartServiceUnavailable && <div id="hideDiv2" role="alert">Sorry, Cart service is currently unavailable 😟</div> }
                             <div className="row container-fluid">
                                 <div className="col-sm-1">&nbsp;</div>
                                 <div className="col-sm-10 card product-card">
