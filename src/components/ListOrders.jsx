@@ -96,9 +96,20 @@ class ListOrders extends Component {
                     </div>
                 )
             } else {
-                return (
-                    <Loader />
-                );
+                if(this.state.orderItems.length > 0) {
+                    return (
+                        <Loader />
+                    );
+                } else {
+                    return (
+                        <div className="service-unavailable">
+                            <br></br>
+                            You haven't shopped with us yet. 😟
+                            <br></br>
+                            Please browse our collection and add your desired products.
+                        </div>
+                    )
+                }
             }
         }
     }
