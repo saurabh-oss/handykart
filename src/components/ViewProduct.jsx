@@ -83,6 +83,8 @@ class ViewProduct extends Component {
                         console.log(err.stack);
                     }
                 );
+            } else {
+                this.setState({ guestUser: true });
             }
         } else {
             this.setState({ guestUser: true });
