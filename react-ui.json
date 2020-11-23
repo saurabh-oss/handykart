@@ -92,7 +92,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "namespace": "${NAMESPACE}",
-              "name": "${NODEJS_VERSION}"
+              "name": "modern-webapp:${NODEJS_VERSION}"
             }
           }
         },
@@ -211,7 +211,7 @@
       "name": "NODEJS_VERSION",
       "displayName": "Version of NodeJS Image",
       "description": "Version of NodeJS image to be used (10, 12, or latest).",
-      "value": "modern-webapp:10.x",
+      "value": "10.x",
       "required": true
     },
     {
