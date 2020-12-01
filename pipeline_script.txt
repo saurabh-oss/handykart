@@ -1,0 +1,23 @@
+node {
+  stage('Build Tasks') {
+    openshift.withCluster() {
+      openshift.withProject("handykart") {
+        openshift.selector("bc", "react-ui").startBuild("--wait=true")
+      }
+    }
+  }
+  stage('Tag Image') {
+    openshift.withCluster() {
+      openshift.withProject("handykart") {
+        openshift.tag("react-ui:latest", "react-ui:${BUILD_NUMBER}")
+      }
+    }
+  }
+  stage('Deploy new image') {
+    openshift.withCluster() {
+      openshift.withProject("handykart") {
+        openshift.selector("dc", "react-ui").rollout().latest();
+      }
+    }
+  }
+}
