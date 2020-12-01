@@ -1,0 +1,97 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: 'https://github.com/s-a-u-r-a-b-h/handykart.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+  selfLink: /apis/apps.openshift.io/v1/namespaces/handykart/deploymentconfigs/react-ui
+  resourceVersion: '398140029'
+  name: react-ui
+  uid: d5cd3b70-9b54-426d-9f69-d9ba8c564d24
+  creationTimestamp: '2020-11-27T04:13:34Z'
+  generation: 10
+  namespace: handykart
+  labels:
+    app: react-ui
+    app.kubernetes.io/component: react-ui
+    app.kubernetes.io/instance: react-ui
+    app.kubernetes.io/name: modern-webapp
+    app.kubernetes.io/part-of: handykart
+    app.openshift.io/runtime: modern-webapp
+    app.openshift.io/runtime-version: 10.x
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        containerNames:
+          - react-ui
+        from:
+          kind: ImageStreamTag
+          namespace: handykart
+          name: 'react-ui:latest'
+        lastTriggeredImage: >-
+          image-registry.openshift-image-registry.svc:5000/handykart/react-ui@sha256:6e2281ed9be47ec10f388016207cbcd9f27d2e58216736419d5184b96e075bc9
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: react-ui
+    deploymentconfig: react-ui
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: react-ui
+        deploymentconfig: react-ui
+    spec:
+      containers:
+        - name: react-ui
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/handykart/react-ui@sha256:6e2281ed9be47ec10f388016207cbcd9f27d2e58216736419d5184b96e075bc9
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+status:
+  observedGeneration: 10
+  details:
+    message: manual change
+    causes:
+      - type: Manual
+  availableReplicas: 1
+  unavailableReplicas: 0
+  latestVersion: 8
+  updatedReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2020-12-01T03:26:55Z'
+      lastTransitionTime: '2020-12-01T03:26:55Z'
+      message: Deployment config has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2020-12-01T04:33:39Z'
+      lastTransitionTime: '2020-12-01T04:33:36Z'
+      reason: NewReplicationControllerAvailable
+      message: replication controller "react-ui-8" successfully rolled out
+  replicas: 1
+  readyReplicas: 1
