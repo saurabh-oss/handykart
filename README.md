@@ -42,6 +42,7 @@ oc new-app jboss-eap71-openshift:1.3~https://github.com/redhat-gpte-devopsautoma
 Expose service (as route) if needed
 oc expose svc react-ui
 
+
 set the automatic deployment triggers to manual as we would be triggering the deployment by Jenkins
 oc set triggers dc react-ui --manual
 
